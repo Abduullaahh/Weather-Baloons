@@ -1,0 +1,12 @@
+{
+  "career_application": {
+    "name": "Muhammad Abdullah Tahir",
+    "email": "your@email.com",
+    "role": "Junior Web Developer",
+    "notes": "I specialize in full-stack web development with React, Next.js, and modern data visualization techniques. I thrive in collaborative environments and love solving complex technical challenges. I chose OpenWeatherMap data because weather conditions (especially wind patterns) directly influence balloon trajectories, creating a scientifically meaningful visualization that helps understand atmospheric dynamics and predict balloon movement.",
+    "submission_url": "https://your-deployment-url.vercel.app",
+    "portfolio_url": "https://your-portfolio-url.com",
+    "resume_url": "https://your-resume-url.com"
+  }
+}
+

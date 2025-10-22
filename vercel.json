@@ -1,0 +1,9 @@
+{
+  "buildCommand": "npm run build",
+  "framework": "nextjs",
+  "regions": ["iad1"],
+  "env": {
+    "OPENWEATHER_API_KEY": "@openweather-api-key"
+  }
+}
+
