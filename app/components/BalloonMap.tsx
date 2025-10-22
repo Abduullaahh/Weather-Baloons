@@ -17,10 +17,11 @@ const Polyline = dynamic(
   () => import('react-leaflet').then((mod) => mod.Polyline),
   { ssr: false }
 );
-const Marker = dynamic(
-  () => import('react-leaflet').then((mod) => mod.Marker),
-  { ssr: false }
-);
+// Marker component imported but not used in current implementation
+// const Marker = dynamic(
+//   () => import('react-leaflet').then((mod) => mod.Marker),
+//   { ssr: false }
+// );
 const Popup = dynamic(
   () => import('react-leaflet').then((mod) => mod.Popup),
   { ssr: false }
@@ -87,7 +88,8 @@ export default function BalloonMap({ autoRefresh = true, refreshInterval = 30000
       
       // Sample every 20th balloon to avoid rate limits
       let count = 0;
-      for (const [balloonId, coords] of Object.entries(balloonJson.balloons)) {
+      for (const [, coordsRaw] of Object.entries(balloonJson.balloons)) {
+        const coords = coordsRaw as number[][];
         if (count % 20 === 0 && coords.length > 0) {
           const lastCoord = coords[coords.length - 1];
           const lat = lastCoord[0];

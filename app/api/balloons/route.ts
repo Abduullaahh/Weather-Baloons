@@ -1,11 +1,5 @@
 import { NextResponse } from 'next/server';
 
-interface BalloonData {
-  id: string;
-  coordinates: number[][];
-  hour: number;
-}
-
 interface ParsedBalloonData {
   balloons: Map<string, number[][]>;
 }
@@ -42,10 +36,9 @@ async function fetchBalloonFile(hour: number): Promise<number[][] | null> {
       }
       
       // Filter valid coordinates [lat, lon, value]
-      const validCoords = data.filter((coord: any) => {
-        return Array.isArray(coord) && 
-               coord.length === 3 && 
-               typeof coord[0] === 'number' && 
+      const validCoords = data.filter((coord: unknown) => {
+        if (!Array.isArray(coord) || coord.length !== 3) return false;
+        return typeof coord[0] === 'number' && 
                typeof coord[1] === 'number' && 
                typeof coord[2] === 'number' &&
                coord[0] >= -90 && coord[0] <= 90 && // valid latitude
@@ -53,7 +46,7 @@ async function fetchBalloonFile(hour: number): Promise<number[][] | null> {
       });
       
       return validCoords;
-    } catch (parseError) {
+    } catch {
       // Try to repair common JSON issues
       const repaired = text
         .replace(/,\s*]/g, ']') // Remove trailing commas
@@ -64,7 +57,7 @@ async function fetchBalloonFile(hour: number): Promise<number[][] | null> {
       try {
         const data = JSON.parse(repaired);
         if (Array.isArray(data)) {
-          return data.filter((coord: any) => 
+          return data.filter((coord: unknown) => 
             Array.isArray(coord) && coord.length === 3
           );
         }
@@ -107,7 +100,7 @@ function groupBalloonsByTrajectory(allCoordinates: number[][][]): Map<string, nu
     if (!hourData) continue;
     
     // For each balloon, find the closest coordinate in the next hour
-    balloons.forEach((balloonCoords, balloonId) => {
+    balloons.forEach((balloonCoords) => {
       const lastCoord = balloonCoords[balloonCoords.length - 1];
       const lastLat = lastCoord[0];
       const lastLon = lastCoord[1];
